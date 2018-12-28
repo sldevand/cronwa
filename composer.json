@@ -14,5 +14,8 @@
     ],
     "require": {
         "phpunit/phpunit": "^7.5"
+    },
+    "scripts": {
+        "test" : "vendor/bin/phpunit"
     }
 }

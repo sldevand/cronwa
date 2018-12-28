@@ -31,5 +31,30 @@ class CronJobTest extends TestCase
         $this->assertEquals($expected, $cronJob);
 
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testParseWithComment()
+    {
+        $expected = new CronJob([
+                'name' => 'test1',
+                'description' => '',
+                'activated' => false,
+                'minute' => '*',
+                'hour' => '*',
+                'day' => '*',
+                'month' => '*',
+                'year' => '*',
+                'command' => 'ls'
+            ]
+        );
+
+        $cronJob = new CronJob(['name' => 'test1']);
+        $cronJob->parse('* * * * * ls');
+
+        $this->assertEquals($expected, $cronJob);
+
+    }
 }
 

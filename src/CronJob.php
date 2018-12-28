@@ -6,6 +6,7 @@ class CronJob
 {
     protected $name;
     protected $description;
+    protected $activated;
     protected $minute;
     protected $hour;
     protected $day;
@@ -17,6 +18,7 @@ class CronJob
         $data = array(
             'name' => 'default',
             'description' => '',
+            'activated' => false,
             'minute' => '*',
             'hour' => '*',
             'day' => '*',
@@ -82,6 +84,7 @@ class CronJob
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -100,6 +103,7 @@ class CronJob
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -118,6 +122,7 @@ class CronJob
     public function setMinute($minute)
     {
         $this->minute = $minute;
+
         return $this;
     }
 
@@ -136,6 +141,7 @@ class CronJob
     public function setHour($hour)
     {
         $this->hour = $hour;
+
         return $this;
     }
 
@@ -154,6 +160,7 @@ class CronJob
     public function setDay($day)
     {
         $this->day = $day;
+
         return $this;
     }
 
@@ -172,6 +179,7 @@ class CronJob
     public function setMonth($month)
     {
         $this->month = $month;
+
         return $this;
     }
 
@@ -190,6 +198,7 @@ class CronJob
     public function setYear($year)
     {
         $this->year = $year;
+
         return $this;
     }
 
@@ -208,6 +217,26 @@ class CronJob
     public function setCommand($command)
     {
         $this->command = $command;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActivated()
+    {
+        return $this->activated;
+    }
+
+    /**
+     * @param mixed $activated
+     * @return CronJob
+     */
+    public function setActivated($activated)
+    {
+        $this->activated = $activated;
+
         return $this;
     }
 
