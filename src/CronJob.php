@@ -29,7 +29,6 @@ class CronJob
     )
     {
         $this->hydrate($data);
-
     }
 
     public function hydrate($data)
@@ -50,6 +49,10 @@ class CronJob
      */
     public function parse($entry)
     {
+        if($entry[0] === "#"){
+            $this->setActivated(false);
+        }
+
         $entries = explode(" ", $entry);
 
         if (!count($entries) === 6) {

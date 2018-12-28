@@ -16,6 +16,7 @@ class CronJobTest extends TestCase
         $expected = new CronJob([
                 'name' => 'test1',
                 'description' => '',
+                'activated' => true,
                 'minute' => '*',
                 'hour' => '*',
                 'day' => '*',
@@ -51,7 +52,7 @@ class CronJobTest extends TestCase
         );
 
         $cronJob = new CronJob(['name' => 'test1']);
-        $cronJob->parse('* * * * * ls');
+        $cronJob->parse('#* * * * * ls');
 
         $this->assertEquals($expected, $cronJob);
 

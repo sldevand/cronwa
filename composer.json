@@ -13,9 +13,12 @@
         }
     ],
     "require": {
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^6.4",
+        "slim/slim": "^3.0",
+        "slim/php-view": "^2.2"
     },
     "scripts": {
-        "test" : "vendor/bin/phpunit"
+        "test" : "vendor/bin/phpunit",
+        "serve" : "php -S localhost:4443 -t public/"
     }
 }
