@@ -1,13 +1,44 @@
 {% extends "base.html.twig" %}
-{% block title %}Tasks{% endblock %}
+{% set title="Tasks" %}
+
+{% block title %}{{ appname }} - {{ title }}{% endblock %}
 
 {% block content %}
 
-<ul>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Minute</th>
+                    <th>Hour</th>
+                    <th>Day</th>
+                    <th>Month</th>
+                    <th>Day of week</th>
+                    <th>Command</th>
 
-    {% for task in tasks %}
-    <li>{{task.name}}</li>
-    {% endfor %}
-</ul>
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in tasks %}
+                    <tr {% if task.activated %} class="is-selected" {% endif %}>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.minute }}</td>
+                        <td>{{ task.hour }}</td>
+                        <td>{{ task.day }}</td>
+                        <td>{{ task.month }}</td>
+                        <td>{{ task.dayOfWeek }}</td>
+                        <td>{{ task.command }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+            Envoyer
+        </button>
+
+    </div>
 
 {% endblock %}

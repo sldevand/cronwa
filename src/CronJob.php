@@ -15,7 +15,7 @@ class CronJob
     protected $hour;
     protected $day;
     protected $month;
-    protected $year;
+    protected $dayOfWeek;
     protected $command;
 
     /**
@@ -31,7 +31,7 @@ class CronJob
             'hour' => '*',
             'day' => '*',
             'month' => '*',
-            'year' => '*',
+            'dayOfWeek' => '*',
             'command' => ''
         )
     )
@@ -69,18 +69,20 @@ class CronJob
 
         $entries = explode(" ", $entry);
 
-        if (!count($entries) === 6) {
+        if (count($entries) < 6) {
             throw new \Exception("Cannot parse '$entry' CronJob entry");
         }
 
-        $entries['minute'] = $entries[0];
-        $entries['hour'] = $entries[1];
-        $entries['day'] = $entries[2];
-        $entries['month'] = $entries[3];
-        $entries['year'] = $entries[4];
-        $entries['command'] = $entries[5];
+        $cronjob = [];
+        $cronjob['minute'] = $entries[0];
+        $cronjob['hour'] = $entries[1];
+        $cronjob['day'] = $entries[2];
+        $cronjob['month'] = $entries[3];
+        $cronjob['dayOfWeek'] = $entries[4];
+        $entries = array_slice($entries, 5);
+        $cronjob['command'] = trim(implode(' ', $entries));
 
-        $this->hydrate($entries);
+        $this->hydrate($cronjob);
 
         return $this;
     }
@@ -202,18 +204,18 @@ class CronJob
     /**
      * @return mixed
      */
-    public function getYear()
+    public function getDayOfWeek()
     {
-        return $this->year;
+        return $this->dayOfWeek;
     }
 
     /**
-     * @param mixed $year
+     * @param mixed $dayOfWeek
      * @return CronJob
      */
-    public function setYear($year)
+    public function setDayOfWeek($dayOfWeek)
     {
-        $this->year = $year;
+        $this->dayOfWeek = $dayOfWeek;
 
         return $this;
     }

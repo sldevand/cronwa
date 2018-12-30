@@ -22,21 +22,11 @@ $container['view'] = function ($c) {
      return $view;
 };
 
-/** @var \App\CronJob*/
-$cronJob = new \App\CronJob();
-$cronJob->parse("* * * * * ls");
-$cronJob->setName('toto');
 
-/** @var \App\CronJob*/
-$cronJob2 = new \App\CronJob();
-$cronJob2->parse("* * * * * ls");
-$cronJob2->setName('tata');
-
-$container->get('crontasks')->addTask($cronJob)->addTask($cronJob2);
+$container->crontasks->fetchFromFile("../crontabs/crontab.camera.txt");
 
 $app->get('/', function (Request $request, Response $response, array $args) {
-    $response = $this->view->render($response, 'tasks.html.twig', ['tasks' => $this->crontasks->getTasks()]);
-    return $response;
+    return $this->view->render($response, 'tasks.html.twig', ['tasks' => $this->crontasks->getTasks()]);;
 });
 
 $app->run();

@@ -1,0 +1,8 @@
+#### Test 1
+59 19,12 * * * ls -la
+
+#### Test 2
+#00,01 20,13 * * * ls -l
+
+#### Test 3
+04,05,06 20,13 * * * sudo curl "http://192.168.1.52/dashboard/resultat.php?actionid=1&val=0"

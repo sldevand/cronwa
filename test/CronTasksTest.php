@@ -11,7 +11,7 @@ class CronTasksTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testAddTask()
+    public function testSaveTask()
     {
         $cronJob = new CronJob(
             [
@@ -21,7 +21,7 @@ class CronTasksTest extends TestCase
                 'hour' => '*',
                 'day' => '1',
                 'month' => '*',
-                'year' => '2018'
+                'dayOfWeek' => '2018'
             ]
         );
         $cronJob2 = new CronJob(
@@ -32,15 +32,15 @@ class CronTasksTest extends TestCase
                 'hour' => '3',
                 'day' => '*',
                 'month' => '*',
-                'year' => '*'
+                'dayOfWeek' => '*'
             ]
         );
 
         $cronTasks = new CronTasks();
 
         $cronTasks
-            ->addTask($cronJob)
-            ->addTask($cronJob2);
+            ->saveTask($cronJob)
+            ->saveTask($cronJob2);
 
         $this->assertTrue(count($cronTasks->getTasks()) === 2, "There are not 2 tasks");
         $this->assertEquals($cronJob, $cronTasks->getTask('test1'));
@@ -48,5 +48,63 @@ class CronTasksTest extends TestCase
         $this->assertNotEquals($cronJob, $cronTasks->getTask('test2'));
         $this->assertNotEquals($cronJob2, $cronTasks->getTask('test1'));
     }
+
+    /**
+     * @throws \App\Exception\CrontaskException
+     */
+    public function testFetchFromFile()
+    {
+        $expected = [
+            'Test 1' =>
+                new CronJob(
+                    [
+                        'name' => 'Test 1',
+                        'description' => '',
+                        'activated' => true,
+                        'minute' => '59',
+                        'hour' => '19,12',
+                        'day' => '*',
+                        'month' => '*',
+                        'dayOfWeek' => '*',
+                        'command' => 'ls -la'
+                    ]),
+            'Test 2' =>
+                new CronJob(
+                    [
+                        'name' => 'Test 2',
+                        'description' => '',
+                        'activated' => false,
+                        'minute' => '00,01',
+                        'hour' => '20,13',
+                        'day' => '*',
+                        'month' => '*',
+                        'dayOfWeek' => '*',
+                        'command' => 'ls -l'
+                    ]),
+            'Test 3' =>
+                new CronJob(
+                    [
+                        'name' => 'Test 3',
+                        'description' => '',
+                        'activated' => true,
+                        'minute' => '04,05,06',
+                        'hour' => '20,13',
+                        'day' => '*',
+                        'month' => '*',
+                        'dayOfWeek' => '*',
+                        'command' => 'sudo curl "http://192.168.1.52/dashboard/resultat.php?actionid=1&val=0"'
+                    ])
+        ];
+
+
+        $cronTasks = new CronTasks();
+        $result = $cronTasks->fetchFromFile("testfiles/crontab.test.txt");
+
+
+        $this->assertEquals($expected, $result);
+
+    }
+
+
 }
 

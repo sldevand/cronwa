@@ -25,7 +25,7 @@ class CronJobTest extends TestCase
                 'hour' => '*',
                 'day' => '*',
                 'month' => '*',
-                'year' => '*',
+                'dayOfWeek' => '*',
                 'command' => 'ls'
             ]
         );
@@ -50,7 +50,7 @@ class CronJobTest extends TestCase
                 'hour' => '*',
                 'day' => '*',
                 'month' => '*',
-                'year' => '*',
+                'dayOfWeek' => '*',
                 'command' => 'ls'
             ]
         );
