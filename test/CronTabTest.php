@@ -3,10 +3,10 @@
 namespace Test;
 
 use App\CronJob;
-use App\CronTasks;
+use App\CronTab;
 use PHPUnit\Framework\TestCase;
 
-class CronTasksTest extends TestCase
+class CronTabTest extends TestCase
 {
     /**
      * @throws \Exception
@@ -36,21 +36,21 @@ class CronTasksTest extends TestCase
             ]
         );
 
-        $cronTasks = new CronTasks();
+        $cronTasks = new CronTab();
 
         $cronTasks
-            ->saveTask($cronJob)
-            ->saveTask($cronJob2);
+            ->saveJob($cronJob)
+            ->saveJob($cronJob2);
 
-        $this->assertTrue(count($cronTasks->getTasks()) === 2, "There are not 2 tasks");
-        $this->assertEquals($cronJob, $cronTasks->getTask('test1'));
-        $this->assertEquals($cronJob2, $cronTasks->getTask('test2'));
-        $this->assertNotEquals($cronJob, $cronTasks->getTask('test2'));
-        $this->assertNotEquals($cronJob2, $cronTasks->getTask('test1'));
+        $this->assertTrue(count($cronTasks->getJobs()) === 2, "There are not 2 tasks");
+        $this->assertEquals($cronJob, $cronTasks->getJob('test1'));
+        $this->assertEquals($cronJob2, $cronTasks->getJob('test2'));
+        $this->assertNotEquals($cronJob, $cronTasks->getJob('test2'));
+        $this->assertNotEquals($cronJob2, $cronTasks->getJob('test1'));
     }
 
     /**
-     * @throws \App\Exception\CrontaskException
+     * @throws \App\Exception\CronJobException
      */
     public function testFetchFromFile()
     {
@@ -97,7 +97,7 @@ class CronTasksTest extends TestCase
         ];
 
 
-        $cronTasks = new CronTasks();
+        $cronTasks = new CronTab();
         $result = $cronTasks->fetchFromFile("testfiles/crontab.test.txt");
 
 

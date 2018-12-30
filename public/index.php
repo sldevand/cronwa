@@ -8,8 +8,8 @@ require_once '../vendor/autoload.php';
 /** @var \Slim\App $app */
 $app = new \Slim\App;
 $container = $app->getContainer();
-$container['crontasks'] = function($c) {
-  return new \App\CronTasks();
+$container['crontabs'] = function($c) {
+  return new \App\CronTabs();
 };
 
 // Register Twig View helper
@@ -22,11 +22,13 @@ $container['view'] = function ($c) {
      return $view;
 };
 
-
-$container->crontasks->fetchFromFile("../crontabs/crontab.camera.txt");
+$container->crontabs->fetchFromDirectory('../crontabs');
 
 $app->get('/', function (Request $request, Response $response, array $args) {
-    return $this->view->render($response, 'tasks.html.twig', ['tasks' => $this->crontasks->getTasks()]);;
+
+    $cronTabs = $this->crontabs->getCronTabs();
+
+    return $this->view->render($response, 'crontabs.html.twig', ['crontabs' => $cronTabs]);
 });
 
 $app->run();

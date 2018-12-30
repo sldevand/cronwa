@@ -3,10 +3,10 @@
 namespace App\Exception;
 
 /**
- * Class CrontaskException
+ * Class CronTabsException
  * @package App\Exception
  */
-class CrontaskException extends \Exception
+class CronTabsException extends \Exception
 {
 
 }
