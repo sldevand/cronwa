@@ -39,7 +39,8 @@ class CronTabs
 
         while (false !== ($entry = $d->read())) {
             if (!preg_match('/^(\.)\w|(\.){1,2}$/', $entry)) {
-                $cronTab = new CronTab($entry);
+                $name = explode('.',$entry)[1];
+                $cronTab = new CronTab($name);
                 $cronTab->fetchFromFile($dirName.'/'.$entry);
                 $this->saveCronTab($cronTab);
             }

@@ -61,5 +61,27 @@ class CronJobTest extends TestCase
         $this->assertEquals($expected, $cronJob);
 
     }
+
+    public function testToString(){
+        $tab = new CronJob([
+                'name' => 'test1',
+                'description' => '',
+                'activated' => true,
+                'minute' => '*',
+                'hour' => '*',
+                'day' => '*',
+                'month' => '*',
+                'dayOfWeek' => '*',
+                'command' => 'ls'
+            ]
+        );
+
+        $expected = "#### test1\n* * * * * ls\n";
+
+        $cronJob = new CronJob($tab);
+
+        $this->assertEquals($expected,$cronJob->__toString());
+
+    }
 }
 

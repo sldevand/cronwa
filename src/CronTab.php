@@ -63,10 +63,16 @@ class CronTab
 
     /**
      * @param string $fileName
+     * @return string
      */
     public function saveToFile($fileName)
     {
+        $content = '';
+        foreach ($this->jobs as $job) {
+          $content.=$job->__toString();
+        }
 
+        return $content;
     }
 
     /**
@@ -140,4 +146,5 @@ class CronTab
         $this->name = $name;
         return $this;
     }
+
 }

@@ -25,7 +25,6 @@ $container['view'] = function ($c) {
 $container->crontabs->fetchFromDirectory('../crontabs');
 
 $app->get('/', function (Request $request, Response $response, array $args) {
-
     $cronTabs = $this->crontabs->getCronTabs();
 
     return $this->view->render($response, 'crontabs.html.twig', ['crontabs' => $cronTabs]);

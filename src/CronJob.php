@@ -258,4 +258,19 @@ class CronJob
         return $this;
     }
 
+    public function __toString()
+    {
+        $content = '#### ' . $this->name . PHP_EOL;
+        if (!$this->activated) $content .= '#';
+        $content .=
+            $this->minute . ' ' .
+            $this->hour . ' ' .
+            $this->day . ' ' .
+            $this->month . ' ' .
+            $this->dayOfWeek . ' ' .
+            $this->command . PHP_EOL;
+
+        return $content;
+    }
+
 }
