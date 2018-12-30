@@ -6,6 +6,10 @@ use App\CronJob;
 use App\CronTasks;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class CronJobTest
+ * @package Test
+ */
 class CronJobTest extends TestCase
 {
     /**

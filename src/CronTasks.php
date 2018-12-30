@@ -1,14 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sebastien
- * Date: 28/12/18
- * Time: 00:11
- */
 
 namespace App;
 
-
+/**
+ * Class CronTasks
+ * @package App
+ */
 class CronTasks
 {
     /**
@@ -24,7 +21,6 @@ class CronTasks
     {
         $this->tasks = $tasks;
     }
-
 
     /**
      * @return CronJob[]

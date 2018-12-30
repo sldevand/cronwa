@@ -2,11 +2,15 @@
 
 namespace App;
 
+/**
+ * Class CronJob
+ * @package App
+ */
 class CronJob
 {
-    protected $name;
-    protected $description;
-    protected $activated;
+    protected $name = 'default';
+    protected $description = '';
+    protected $activated = false;
     protected $minute;
     protected $hour;
     protected $day;
@@ -14,6 +18,10 @@ class CronJob
     protected $year;
     protected $command;
 
+    /**
+     * CronJob constructor.
+     * @param array $data
+     */
     public function __construct(
         $data = array(
             'name' => 'default',
@@ -31,6 +39,9 @@ class CronJob
         $this->hydrate($data);
     }
 
+    /**
+     * @param $data
+     */
     public function hydrate($data)
     {
         foreach ($data as $attribute => $value) {
@@ -49,8 +60,11 @@ class CronJob
      */
     public function parse($entry)
     {
-        if($entry[0] === "#"){
+        if ($entry[0] === "#") {
             $this->setActivated(false);
+            $entry = substr($entry, 1);
+        } else {
+            $this->setActivated(true);
         }
 
         $entries = explode(" ", $entry);
@@ -65,7 +79,6 @@ class CronJob
         $entries['month'] = $entries[3];
         $entries['year'] = $entries[4];
         $entries['command'] = $entries[5];
-
 
         $this->hydrate($entries);
 
