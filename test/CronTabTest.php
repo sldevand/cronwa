@@ -71,7 +71,6 @@ class CronTabTest extends TestCase
 
         $filePath = __DIR__ . '/testfiles/crontab.test2.txt';
 
-        if (file_exists($filePath)) unlink($filePath);
 
         $cronTab = new CronTab('test', $expJobs);
 
@@ -93,6 +92,8 @@ EXP;
 
         $jobs = $cronTab->fetchFromFile($filePath);
         $this->assertEquals($expJobs, $jobs);
+
+        if (file_exists($filePath)) unlink($filePath);
 
     }
 

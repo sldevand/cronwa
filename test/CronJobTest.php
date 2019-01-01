@@ -13,80 +13,70 @@ use PHPUnit\Framework\TestCase;
 class CronJobTest extends TestCase
 {
     /**
+     * @dataProvider jobsProvider
+     * @param CronJob $expected
+     * @param string $parseStr
      * @throws \Exception
      */
-    public function testParse()
+    public function testParse($expected, $parseStr)
     {
-        $expected = new CronJob([
-                'name' => 'test1',
-                'description' => '',
-                'activated' => true,
-                'minute' => '*',
-                'hour' => '*',
-                'day' => '*',
-                'month' => '*',
-                'dayOfWeek' => '*',
-                'command' => 'ls'
-            ]
-        );
-
-        $cronJob = new CronJob(['name' => 'test1']);
-        $cronJob->parse('* * * * * ls');
+        $cronJob = new CronJob(['name' => 'test']);
+        $cronJob->parse($parseStr);
 
         $this->assertEquals($expected, $cronJob);
 
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function testParseWithComment()
+    public function testToString()
     {
-        $expected = new CronJob([
-                'name' => 'test1',
-                'description' => '',
-                'activated' => false,
-                'minute' => '*',
-                'hour' => '*',
-                'day' => '*',
-                'month' => '*',
-                'dayOfWeek' => '*',
-                'command' => 'ls'
-            ]
-        );
-
-        $cronJob = new CronJob(['name' => 'test1']);
-        $cronJob->parse('#* * * * * ls');
-
-        $this->assertEquals($expected, $cronJob);
-
-    }
-
-    public function testToString(){
-        $tab = new CronJob([
-                'name' => 'test1',
-                'description' => '',
-                'activated' => true,
-                'minute' => '*',
-                'hour' => '*',
-                'day' => '*',
-                'month' => '*',
-                'dayOfWeek' => '*',
-                'command' => 'ls'
-            ]
-        );
-
         $expected = <<<EXP
 #### test1
 * * * * * ls
 
 
 EXP;
+        $cronJob = $this->createCronJob('test1');
 
-        $cronJob = new CronJob($tab);
+        $this->assertEquals($expected, $cronJob->__toString());
 
-        $this->assertEquals($expected,$cronJob->__toString());
+    }
 
+    public function jobsProvider()
+    {
+        $cronJob = $this->createCronJob('test');
+        $cronJob2 = clone $cronJob;
+        $cronJob2->setActivated(false);
+
+        return [
+            [
+                $cronJob->getName() => $cronJob,
+                '* * * * * ls'
+            ],
+            [
+                $cronJob->getName() => $cronJob2,
+                '#* * * * * ls'
+            ]
+        ];
+    }
+
+    /**
+     * @param string $name
+     * @return CronJob
+     */
+    public function createCronJob($name)
+    {
+        return new CronJob([
+                'name' => $name,
+                'description' => '',
+                'activated' => true,
+                'minute' => '*',
+                'hour' => '*',
+                'day' => '*',
+                'month' => '*',
+                'dayOfWeek' => '*',
+                'command' => 'ls'
+            ]
+        );
     }
 }
 
