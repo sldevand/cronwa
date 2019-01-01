@@ -4,49 +4,34 @@
 {% block title %}{{ appname }} - {{ title }}{% endblock %}
 
 {% block content %}
-
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col">
-
-            {% for crontab in crontabs %}
-
+    {% for crontab in crontabs %}
+        <div class="table-responsive">
             <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
                 <caption><h4>{{ crontab.name }}</h4></caption>
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Minute</th>
-                    <th>Hour</th>
-                    <th>Day</th>
-                    <th>Month</th>
-                    <th>Day of week</th>
-                    <th>Command</th>
-
+                    <th>Nom</th>
+                    <th>Edition</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for job in crontab.jobs %}
                     <tr {% if job.activated %} class="is-selected" {% endif %}>
                         <td>{{ job.name }}</td>
-                        <td>{{ job.minute }}</td>
-                        <td>{{ job.hour }}</td>
-                        <td>{{ job.day }}</td>
-                        <td>{{ job.month }}</td>
-                        <td>{{ job.dayOfWeek }}</td>
-                        <td>{{ job.command }}</td>
+                        <td>
+                            <a href="edit/{{ job.name }}">
+                                <i class="material-icons">edit</i>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
-
-        {% endfor %}
-
         </div>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-            Envoyer
-        </button>
+    {% endfor %}
 
-    </div>
-
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Envoyer
+    </button>
 {% endblock %}

@@ -30,4 +30,13 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     return $this->view->render($response, 'crontabs.html.twig', ['crontabs' => $cronTabs]);
 });
 
+$app->get('/edit/{name}', function (Request $request, Response $response, array $args) {
+
+    $name = $args['name'];
+
+    return $this->view->render($response, 'crontab-edit.html.twig', ['name' => $name]);
+});
+
+
+
 $app->run();
