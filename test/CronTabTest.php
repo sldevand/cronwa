@@ -11,7 +11,7 @@ class CronTabTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testSaveTask()
+    public function testSaveJob()
     {
         $cronJob = new CronJob(
             [
@@ -50,11 +50,55 @@ class CronTabTest extends TestCase
     }
 
     /**
+     * @dataProvider expectedJobsProvider
      * @throws \App\Exception\CronJobException
      */
-    public function testFetchFromFile()
+    public function testFetchFromFile($expJobs)
     {
-        $expected = [
+        $cronTab = new CronTab('test');
+        $result = $cronTab->fetchFromFile(__DIR__ . '/testfiles/crontab.test.txt');
+
+        $this->assertEquals($expJobs, $result);
+    }
+
+    /**
+     * @dataProvider expectedJobsProvider
+     * @param $expJobs
+     * @throws \App\Exception\CronJobException
+     */
+    public function testSaveToFile($expJobs)
+    {
+
+        $filePath = __DIR__ . '/testfiles/crontab.test2.txt';
+
+        if (file_exists($filePath)) unlink($filePath);
+
+        $cronTab = new CronTab('test', $expJobs);
+
+        $expected = <<<EXP
+#### Test 1
+59 19,12 * * * ls -la
+
+#### Test 2
+#00,01 20,13 * * * ls -l
+
+#### Test 3
+04,05,06 20,13 * * * sudo curl "http://192.168.1.52/dashboard/resultat.php?actionid=1&val=0"
+
+
+EXP;
+
+        $result = $cronTab->saveToFile($filePath);
+        $this->assertEquals($expected, $result);
+
+        $jobs = $cronTab->fetchFromFile($filePath);
+        $this->assertEquals($expJobs, $jobs);
+
+    }
+
+    public function expectedJobsProvider()
+    {
+        $cronJobs = [
             'Test 1' =>
                 new CronJob(
                     [
@@ -96,64 +140,7 @@ class CronTabTest extends TestCase
                     ])
         ];
 
-
-        $cronTab = new CronTab('test');
-        $result = $cronTab->fetchFromFile("testfiles/crontab.test.txt");
-
-
-        $this->assertEquals($expected, $result);
-    }
-
-    public function testSaveToFile()
-    {
-        $cronTab = new CronTab('test', [
-            'Test 1' =>
-                new CronJob(
-                    [
-                        'name' => 'Test 1',
-                        'description' => '',
-                        'activated' => true,
-                        'minute' => '59',
-                        'hour' => '19,12',
-                        'day' => '*',
-                        'month' => '*',
-                        'dayOfWeek' => '*',
-                        'command' => 'ls -la'
-                    ]),
-            'Test 2' =>
-                new CronJob(
-                    [
-                        'name' => 'Test 2',
-                        'description' => '',
-                        'activated' => false,
-                        'minute' => '00,01',
-                        'hour' => '20,13',
-                        'day' => '*',
-                        'month' => '*',
-                        'dayOfWeek' => '*',
-                        'command' => 'ls -l'
-                    ]),
-            'Test 3' =>
-                new CronJob(
-                    [
-                        'name' => 'Test 3',
-                        'description' => '',
-                        'activated' => true,
-                        'minute' => '04,05,06',
-                        'hour' => '20,13',
-                        'day' => '*',
-                        'month' => '*',
-                        'dayOfWeek' => '*',
-                        'command' => 'sudo curl "http://192.168.1.52/dashboard/resultat.php?actionid=1&val=0"'
-                    ])
-        ]);
-
-        $expected = "#### Test 1\n59 19,12 * * * ls -la\n#### Test 2\n#00,01 20,13 * * * ls -l\n#### Test 3\n04,05,06 20,13 * * * sudo curl \"http://192.168.1.52/dashboard/resultat.php?actionid=1&val=0\"\n";
-
-        $result = $cronTab->saveToFile('testfiles/crontab.test2.txt');
-        $this->assertEquals($expected, $result);
-
-
+        return [[$cronJobs]];
     }
 
 }

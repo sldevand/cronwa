@@ -72,6 +72,8 @@ class CronTab
           $content.=$job->__toString();
         }
 
+        file_put_contents($fileName,$content);
+
         return $content;
     }
 

@@ -76,7 +76,12 @@ class CronJobTest extends TestCase
             ]
         );
 
-        $expected = "#### test1\n* * * * * ls\n";
+        $expected = <<<EXP
+#### test1
+* * * * * ls
+
+
+EXP;
 
         $cronJob = new CronJob($tab);
 

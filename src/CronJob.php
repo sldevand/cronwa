@@ -260,17 +260,15 @@ class CronJob
 
     public function __toString()
     {
-        $content = '#### ' . $this->name . PHP_EOL;
-        if (!$this->activated) $content .= '#';
-        $content .=
-            $this->minute . ' ' .
-            $this->hour . ' ' .
-            $this->day . ' ' .
-            $this->month . ' ' .
-            $this->dayOfWeek . ' ' .
-            $this->command . PHP_EOL;
+        $activatedTag = '';
+        if (!$this->activated) $activatedTag = '#';
 
-        return $content;
+        return <<<STR
+#### $this->name
+$activatedTag$this->minute $this->hour $this->day $this->month $this->dayOfWeek $this->command
+
+
+STR;
     }
 
 }
