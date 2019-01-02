@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+{% set title="Edition" %}
+
+{% block title %}{{ appname }} - {{ title }}{% endblock %}
+
+{% block content %}
+    <form action="{{ base_path }}/{{ cronTab.name }}" method="post">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="minute" id="minute" value="{{ job.minute }}"/>
+                    <label class="mdl-textfield__label" for="minute">Minutes</label>
+                </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="hour" id="hour" value="{{ job.hour }}"/>
+                    <label class="mdl-textfield__label" for="hour">Heures</label>
+                </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="day" id="day" value="{{ job.day }}"/>
+                    <label class="mdl-textfield__label" for="day">Jours</label>
+                </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="month" id="month" value="{{ job.month }}"/>
+                    <label class="mdl-textfield__label" for="month">Mois</label>
+                </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="dayOfWeek" id="dayOfWeek"
+                           value="{{ job.dayOfWeek }}"/>
+                    <label class="mdl-textfield__label" for="dayOfWeek">Jour de la semaine</label>
+                </div>
+            </div>
+
+            <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" name="command" id="command" value="{{ job.command }}"/>
+                <label class="mdl-textfield__label" for="command">Commande</label>
+            </div>
+
+            <button class="mdl-cell mdl-cell--12-col mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                    type="submit">
+                Envoyer
+            </button>
+
+    </form>
+
+{% endblock %}

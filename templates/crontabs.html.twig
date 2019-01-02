@@ -19,7 +19,7 @@
                     <tr {% if job.activated %} class="is-selected" {% endif %}>
                         <td>{{ job.name }}</td>
                         <td>
-                            <a href="edit/{{ job.name }}">
+                            <a href="edit/{{ crontab.name }}/{{ job.name }}">
                                 <i class="material-icons">edit</i>
                             </a>
                         </td>

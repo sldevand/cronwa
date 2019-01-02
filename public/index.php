@@ -1,42 +1,18 @@
 <?php
+if (PHP_SAPI == 'cli-server') {
+    $url = parse_url($_SERVER['REQUEST_URI']);
+    $file = __DIR__ . $url['path'];
+    if (is_file($file)) {
+        return false;
+    }
+}
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-
-require_once '../vendor/autoload.php';
-
+require __DIR__ . '/../vendor/autoload.php';
+session_start();
+$settings = require __DIR__ . '/../src/settings.php';
 /** @var \Slim\App $app */
-$app = new \Slim\App;
-$container = $app->getContainer();
-$container['crontabs'] = function($c) {
-  return new \App\CronTabs();
-};
-
-// Register Twig View helper
-$container['view'] = function ($c) {
-    $view = new \Slim\Views\Twig(
-        '../templates', [
-        'cache' => false
-    ]);
-
-     return $view;
-};
-
-$container->crontabs->fetchFromDirectory('../crontabs');
-
-$app->get('/', function (Request $request, Response $response, array $args) {
-    $cronTabs = $this->crontabs->getCronTabs();
-
-    return $this->view->render($response, 'crontabs.html.twig', ['crontabs' => $cronTabs]);
-});
-
-$app->get('/edit/{name}', function (Request $request, Response $response, array $args) {
-
-    $name = $args['name'];
-
-    return $this->view->render($response, 'crontab-edit.html.twig', ['name' => $name]);
-});
-
-
-
+$app = new \Slim\App($settings);
+require_once __DIR__ . '/../src/dependencies.php';
+require_once __DIR__ . '/../src/middleware.php';
+require_once __DIR__ . '/../src/routes.php';
 $app->run();
