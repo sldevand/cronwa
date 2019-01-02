@@ -2,8 +2,7 @@
 
 namespace Test;
 
-use App\CronJob;
-use App\CronTab;
+use App\Cron\CronJob;
 use PHPUnit\Framework\TestCase;
 
 /**

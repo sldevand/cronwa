@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Cron;
 
 use App\Exception\CronTabsException;
 
