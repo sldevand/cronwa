@@ -258,16 +258,44 @@ class CronJob
         return $this;
     }
 
+    /**
+     * Returns the full objet with name and cron expression
+     * @return string
+     */
     public function __toString()
     {
         $activatedTag = '';
         if (!$this->activated) $activatedTag = '#';
 
+        $cronExpression = $this->toCronExpression();
+
         return <<<STR
 #### $this->name
-$activatedTag$this->minute $this->hour $this->day $this->month $this->dayOfWeek $this->command
+$activatedTag$cronExpression
 
 
+STR;
+    }
+
+    /**
+     * Returns the full cron expression line with command
+     * @return string
+     */
+    public function toCronExpression()
+    {
+
+        $cronDatePart = $this->toCronDatePart();
+
+        return <<<STR
+$cronDatePart $this->command
+STR;
+    }
+
+
+    public function toCronDatePart()
+    {
+        return <<<STR
+$this->minute $this->hour $this->day $this->month $this->dayOfWeek
 STR;
     }
 

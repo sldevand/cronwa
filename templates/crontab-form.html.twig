@@ -6,52 +6,33 @@
 {% block content %}
     <form action="{{ base_path }}/{{ cronTab.name }}" method="post">
         <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--4-col">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" name="minute" id="minute" value="{{ job.minute }}"/>
-                    <label class="mdl-textfield__label" for="minute">Minutes</label>
+            <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="expression" id="expression"
+                           value="{{ job.toCronDatePart }}"/>
+                    <label class="mdl-textfield__label" for="expression">Expression Cron</label>
                 </div>
             </div>
 
-            <div class="mdl-cell mdl-cell--4-col">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" name="hour" id="hour" value="{{ job.hour }}"/>
-                    <label class="mdl-textfield__label" for="hour">Heures</label>
+            <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                <div id="cron-expression-description" class="mdl-cell--12-col">
+                    Ici l'expression cron lisible par l'humain...
                 </div>
             </div>
 
-            <div class="mdl-cell mdl-cell--4-col">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" name="day" id="day" value="{{ job.day }}"/>
-                    <label class="mdl-textfield__label" for="day">Jours</label>
+            <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" name="command" id="command"
+                           value="{{ job.command }}"/>
+                    <label class="mdl-textfield__label" for="command">Commande</label>
                 </div>
             </div>
+        </div>
 
-            <div class="mdl-cell mdl-cell--4-col">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" name="month" id="month" value="{{ job.month }}"/>
-                    <label class="mdl-textfield__label" for="month">Mois</label>
-                </div>
-            </div>
-
-            <div class="mdl-cell mdl-cell--4-col">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" name="dayOfWeek" id="dayOfWeek"
-                           value="{{ job.dayOfWeek }}"/>
-                    <label class="mdl-textfield__label" for="dayOfWeek">Jour de la semaine</label>
-                </div>
-            </div>
-
-            <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" name="command" id="command" value="{{ job.command }}"/>
-                <label class="mdl-textfield__label" for="command">Commande</label>
-            </div>
-
-            <button class="mdl-cell mdl-cell--12-col mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-                    type="submit">
-                Envoyer
-            </button>
-
+        <button id="send-btn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                type="submit">
+            <i class="material-icons">send</i>
+        </button>
     </form>
 
 {% endblock %}
