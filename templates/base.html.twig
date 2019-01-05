@@ -5,46 +5,37 @@
     {% block head %}
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ base_path }}/assets/css/material.min.css"/>
-        <script src="{{ base_path }}/assets/js/material.min.js"></script>
-        <script src="{{ base_path }}/assets/js/events.js"></script>
-        <link rel="stylesheet" href="{{ base_path }}/assets/css/material-icons.css"/>
-        <link rel="stylesheet" href="{{ base_path }}/assets/css/styles.css"/>
+        <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/material.min.css"/>
+        <script src="{{ base_path }}/cronwa/public/assets/js/material.min.js"></script>
+        <script src="{{ base_path }}/cronwa/public/assets/js/events.js"></script>
+        <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/material-icons.css"/>
+        <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/styles.css"/>
     {% endblock %}
 </head>
 <body>
 
 {% block toolbar %}
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header">
-            <div class="mdl-layout__header-row">
-                <!-- Title -->
-                <span class="mdl-layout-title">{{ title }}</span>
-                <!-- Add spacer, to align navigation to the right -->
-                <div class="mdl-layout-spacer"></div>
-                <!-- Navigation. We hide it in small screens. -->
-                <nav class="mdl-navigation mdl-layout--large-screen-only">
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                </nav>
-            </div>
-        </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">{{ appname }}</span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-            </nav>
-        </div>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-        <main class="mdl-layout__content">
-            <div class="page-content">{% block content %}{% endblock %}</div>
-        </main>
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title"><a href="/cronwa">{{ title }}</a></span>
+        </div>
+    </header>
+
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">{{ appname }}</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="/cronwa">Accueil</a>
+
+        </nav>
     </div>
+
+    <main class="mdl-layout__content">
+        <div class="page-content">{% block content %}{% endblock %}</div>
+    </main>
+</div>
 {% endblock %}
 
 <div id="footer">

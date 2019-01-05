@@ -54,5 +54,10 @@
     right:25px;
 }
 
+.mdl-layout-title a{
+    text-decoration: none;
+    color: inherit;
+}
+
 
 

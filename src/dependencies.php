@@ -11,7 +11,7 @@ $container['crontabs'] = function ($c) {
 // Register Twig View helper
 $container['view'] = function ($c) {
     $view = new \Slim\Views\Twig(
-        '../templates', [
+        __DIR__.'/../templates', [
         'cache' => false
     ]);
 
@@ -20,7 +20,7 @@ $container['view'] = function ($c) {
 
 $container['logger'] = function ($c) {
     $logger = new \Monolog\Logger('my_logger');
-    $file_handler = new \Monolog\Handler\StreamHandler('../logs/app.log');
+    $file_handler = new \Monolog\Handler\StreamHandler(__DIR__.'/../logs/app.log');
     $logger->pushHandler($file_handler);
     return $logger;
 };
