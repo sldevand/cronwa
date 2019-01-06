@@ -8,10 +8,12 @@ window.addEventListener('load', onInit);
 function onInit() {
   initFlash();
   initErrors();
+  initDelete();
 }
 
 function initFlash() {
   var flash = document.querySelector('#flash ul');
+  if (null === flash) return;
 
   if (flash.textContent.length !== 0) {
     _snackbar.Snackbar.show('snackbar', flash.textContent);
@@ -22,11 +24,55 @@ function initFlash() {
 
 function initErrors() {
   var errors = document.querySelector('.errorMessages');
+  if (null === errors) return;
 
   if (errors.textContent.length !== 0) {
     setTimeout(function () {
       errors.innerHTML = '';
     }, 3000);
+  }
+}
+
+function initDelete() {
+  var deleteButtons = document.getElementsByClassName('delete');
+  var dialog = document.querySelector('#dialog');
+
+  if (!dialog.showModal) {
+    dialogPolyfill.registerDialog(dialog);
+  }
+
+  if (null === deleteButtons) return;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = deleteButtons[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var deleteButton = _step.value;
+
+      deleteButton.onclick = function (event) {
+        event.preventDefault();
+        var href = event.target.parentNode.attributes['href'];
+        dialog.showModal();
+      };
+
+      dialog.querySelector('button:not([disabled])').addEventListener('click', function () {
+        dialog.close();
+      });
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
   }
 }
 

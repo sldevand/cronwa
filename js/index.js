@@ -2,25 +2,50 @@ import {Snackbar} from './snackbar';
 
 window.addEventListener('load', onInit);
 
-function onInit(){
+function onInit() {
     initFlash();
     initErrors();
+    initDelete();
 }
 
-function initFlash(){
+function initFlash() {
     const flash = document.querySelector('#flash ul');
-    if(flash.textContent.length !== 0){
-        Snackbar.show('snackbar',flash.textContent);
-        flash.innerHTML='';
+    if (null === flash) return;
+    if (flash.textContent.length !== 0) {
+        Snackbar.show('snackbar', flash.textContent);
+        flash.innerHTML = '';
     }
 }
 
-
-function initErrors(){
+function initErrors() {
     const errors = document.querySelector('.errorMessages');
-    if(errors.textContent.length !== 0){
-       setTimeout(()=>{
-           errors.innerHTML='';
-       },3000);
+    if (null === errors) return;
+    if (errors.textContent.length !== 0) {
+        setTimeout(() => {
+            errors.innerHTML = '';
+        }, 3000);
+    }
+}
+
+function initDelete() {
+    const deleteButtons = document.getElementsByClassName('delete');
+    const dialog = document.querySelector('#dialog');
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+
+
+    if (null === deleteButtons) return;
+    for (let deleteButton of deleteButtons) {
+        deleteButton.onclick = (event) => {
+            event.preventDefault();
+            const href = event.target.parentNode.attributes['href'];
+            dialog.showModal();
+
+        }
+        dialog.querySelector('button:not([disabled])')
+            .addEventListener('click', function () {
+                dialog.close();
+            });
     }
 }

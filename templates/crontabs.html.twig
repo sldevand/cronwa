@@ -13,6 +13,7 @@
                 <tr>
                     <th>Nom</th>
                     <th>Edition</th>
+                    <th>Effacer</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -22,7 +23,12 @@
                         <td>{{ job.name }}</td>
                         <td>
                             <a href="edit/{{ crontab.name }}/{{ job.name }}">
-                                <i class="material-icons">edit</i>
+                                <i class="material-icons mdl-color-text--green">edit</i>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="delete" href="">
+                                <i class="material-icons mdl-color-text-accent">delete</i>
                             </a>
                         </td>
                     </tr>

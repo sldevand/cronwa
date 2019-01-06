@@ -11,7 +11,7 @@ $app->group('/cronwa/', function (App $app) {
     $app->get('', CronTabsController::class . ':home')->setName("home");
     $app->get('edit/{tab}/{job}', CronJobController::class . ':edit');
     $app->get('add/{tab}', CronJobController::class . ':edit');
-
+    $app->get('delete/{tab}/{job}', CronJobController::class . ':delete');
 
     $usernameValidator = v::alnum()->length(4, 80);
     $validators = array(

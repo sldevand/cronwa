@@ -6,6 +6,7 @@
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/material.min.css"/>
+        <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/dialog-polyfill.css"/>
         <script src="{{ base_path }}/cronwa/public/assets/js/material.min.js"></script>
         <script src="{{ base_path }}/cronwa/public/assets/js/index.js"></script>
         <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/material-icons.css"/>
@@ -45,8 +46,21 @@
 
 <div id="footer">
     {% block footer %}
-
+        <dialog id="dialog" class="mdl-dialog">
+            <h3 class="mdl-dialog__title">MDL Dialog</h3>
+            <div class="mdl-dialog__content">
+                <p>
+                    This is an example of the Material Design Lite dialog component.
+                    Please use responsibly.
+                </p>
+            </div>
+            <div class="mdl-dialog__actions">
+                <button type="button" class="mdl-button">Close</button>
+                <button type="button" class="mdl-button" disabled>Disabled action</button>
+            </div>
+        </dialog>
     {% endblock %}
 </div>
+<script src="{{ base_path }}/cronwa/public/assets/js/dialog-polyfill.js"></script>
 </body>
 </html>

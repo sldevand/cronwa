@@ -17,7 +17,6 @@ use Slim\Http\Response;
  */
 class CronJobController extends AbstractController
 {
-
     /**
      * @var CronTabs $crontabs
      */
@@ -117,7 +116,8 @@ class CronJobController extends AbstractController
                 ->setActivated($activated);
         } catch (CronTabsException $e) {
             $cronjob = new CronJob();
-            $cronjob->setName($cronjobName)
+            $cronjob
+                ->setName($cronjobName)
                 ->parse($expression . ' ' . $command)
                 ->setActivated($activated);
             $crontab->saveJob($cronjob);
@@ -128,6 +128,29 @@ class CronJobController extends AbstractController
         $this->flash->addMessage('flash', 'Fichier enregistré !');
 
         return $response->withRedirect($redirectGoodUrl, $redirectStatus);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws CronTabsException
+     */
+    public function delete(Request $request, Response $response, array $args)
+    {
+        $redirectGoodUrl = '/cronwa/';
+        $tab = $args['tab'];
+        /** @var CronTab $cronTab */
+        $cronTab = $this->crontabs->getCronTab($tab);
+        $jobName = $args['job'];
+        $filename = CRONTABS_PATH . '/crontab.' . $tab . '.txt';
+
+        $cronTab->removeJob($jobName);
+        $cronTab->saveToFile($filename);
+        $this->flash->addMessage('flash', "Le job  $jobName à été effacé!");
+
+        return $response->withRedirect($redirectGoodUrl, 302);
     }
 
     /**
