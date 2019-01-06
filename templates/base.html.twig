@@ -32,7 +32,9 @@
 
         <main class="mdl-layout__content">
             <div class="page-content">{% block content %}{% endblock %}</div>
-            <div id="flash" hidden>{{ message }}</div>
+            <div id="flash" hidden>
+                <ul>{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
+            </div>
             <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
                 <div class="mdl-snackbar__text"></div>
                 <button class="mdl-snackbar__action" type="button"></button>

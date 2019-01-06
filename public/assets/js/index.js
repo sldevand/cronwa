@@ -7,15 +7,26 @@ window.addEventListener('load', onInit);
 
 function onInit() {
   initFlash();
+  initErrors();
 }
 
 function initFlash() {
-  var flash = document.querySelector('#flash');
+  var flash = document.querySelector('#flash ul');
 
   if (flash.textContent.length !== 0) {
     _snackbar.Snackbar.show('snackbar', flash.textContent);
 
     flash.innerHTML = '';
+  }
+}
+
+function initErrors() {
+  var errors = document.querySelector('.errorMessages');
+
+  if (errors.textContent.length !== 0) {
+    setTimeout(function () {
+      errors.innerHTML = '';
+    }, 3000);
   }
 }
 

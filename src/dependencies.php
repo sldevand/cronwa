@@ -2,6 +2,9 @@
 /**
  * @var \Slim\Container $container
  */
+
+use App\Controller\CronJobController;
+
 $container = $app->getContainer();
 
 /**
@@ -27,7 +30,7 @@ $container['flash'] = function () {
  */
 $container['twig'] = function ($c) {
     $twig = new \Slim\Views\Twig(
-        __DIR__.'/../templates', [
+        __DIR__ . '/../templates', [
         'cache' => false
     ]);
 
@@ -35,13 +38,22 @@ $container['twig'] = function ($c) {
 };
 
 /**
- *  @param \Slim\Container $c
+ * @param \Slim\Container $c
  * @return \Monolog\Logger
  */
 $container['logger'] = function ($c) {
     $logger = new \Monolog\Logger('my_logger');
-    $file_handler = new \Monolog\Handler\StreamHandler(__DIR__.'/../logs/app.log');
+    $file_handler = new \Monolog\Handler\StreamHandler(__DIR__ . '/../logs/app.log');
     $logger->pushHandler($file_handler);
 
     return $logger;
+};
+
+/**
+ * @param \Slim\Container $c
+ * @return CronJobController
+ */
+$container['CronJobController'] = function ($c) {
+
+    return new CronJobController($c);
 };
