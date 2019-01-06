@@ -9,7 +9,12 @@ use Slim\Http\Response;
 $app->group('/cronwa/', function (App $app) {
 
     $app->get('', function (Request $request, Response $response, array $args) {
-        $message = $this->flash->getFirstMessage('flash');
+
+        $message = '';
+        $messages = $this->flash->getMessage('flash');
+        if (is_array($messages) && count($messages) > 0) {
+            $message = $messages[0];
+        }
 
         return $this->twig->render(
             $response, 'crontabs.html.twig',
@@ -37,7 +42,6 @@ $app->group('/cronwa/', function (App $app) {
             $body = $request->getParsedBody();
 
             //TODO Here run the validation and persistence in file
-
 
 
             $this->flash->addMessage('flash', 'Fichier enregistré !');
