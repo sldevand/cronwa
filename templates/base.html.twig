@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/material.min.css"/>
         <script src="{{ base_path }}/cronwa/public/assets/js/material.min.js"></script>
-        <script src="{{ base_path }}/cronwa/public/assets/js/events.js"></script>
+        <script src="{{ base_path }}/cronwa/public/assets/js/index.js"></script>
         <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/material-icons.css"/>
         <link rel="stylesheet" href="{{ base_path }}/cronwa/public/assets/css/styles.css"/>
     {% endblock %}
@@ -15,27 +15,30 @@
 <body>
 
 {% block toolbar %}
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title"><a href="/cronwa">{{ title }}</a></span>
+            </div>
+        </header>
 
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">{{ appname }}</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="/cronwa">Accueil</a>
 
-    <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-            <span class="mdl-layout-title"><a href="/cronwa">{{ title }}</a></span>
+            </nav>
         </div>
-    </header>
 
-    <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">{{ appname }}</span>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="/cronwa">Accueil</a>
-
-        </nav>
+        <main class="mdl-layout__content">
+            <div class="page-content">{% block content %}{% endblock %}</div>
+            <div id="flash" hidden>{{ message }}</div>
+            <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button class="mdl-snackbar__action" type="button"></button>
+            </div>
+        </main>
     </div>
-
-    <main class="mdl-layout__content">
-        <div class="page-content">{% block content %}{% endblock %}</div>
-    </main>
-</div>
 {% endblock %}
 
 <div id="footer">

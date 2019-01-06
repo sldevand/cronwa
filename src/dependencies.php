@@ -1,6 +1,13 @@
 <?php
-
+/**
+ * @var \Slim\Container $container
+ */
 $container = $app->getContainer();
+
+/**
+ * @param \Slim\Container $c
+ * @return \App\Cron\CronTabs
+ */
 $container['crontabs'] = function ($c) {
     $cronTabs = new \App\Cron\CronTabs();
     $cronTabs->fetchFromDirectory(__DIR__ . '/../crontabs');
@@ -8,21 +15,33 @@ $container['crontabs'] = function ($c) {
     return $cronTabs;
 };
 
-// Register Twig View helper
-$container['view'] = function ($c) {
-    $view = new \Slim\Views\Twig(
+/**
+ * @return \Slim\Flash\Messages
+ */
+$container['flash'] = function () {
+    return new \Slim\Flash\Messages();
+};
+
+/** @param \Slim\Container $c
+ * @return \Slim\Views\Twig
+ */
+$container['twig'] = function ($c) {
+    $twig = new \Slim\Views\Twig(
         __DIR__.'/../templates', [
         'cache' => false
     ]);
 
-    return $view;
+    return $twig;
 };
 
+/**
+ *  @param \Slim\Container $c
+ * @return \Monolog\Logger
+ */
 $container['logger'] = function ($c) {
     $logger = new \Monolog\Logger('my_logger');
     $file_handler = new \Monolog\Handler\StreamHandler(__DIR__.'/../logs/app.log');
     $logger->pushHandler($file_handler);
+
     return $logger;
 };
-
-
