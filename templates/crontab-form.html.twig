@@ -11,6 +11,14 @@
 
         <div class="mdl-grid">
             <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+
+                <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="activated">
+                        <input type="checkbox" id="activated" class="mdl-switch__input" name="activated" {% if job.activated %}checked{% endif %}/>
+                        <span class="mdl-switch__label">Activation</span>
+                    </label>
+                </div>
+
                 <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" name="name" id="name"
                            value="{{ job.name }}"/>

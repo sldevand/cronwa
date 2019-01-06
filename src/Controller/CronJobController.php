@@ -96,7 +96,10 @@ class CronJobController extends AbstractController
         $previousName = $body['previous_name'];
         $command = $body['command'];
         $filename = CRONTABS_PATH . '/crontab.' . $crontabName . '.txt';
-
+        $activated = false;
+        if (array_key_exists('activated', $body) && $body['activated'] === "on") {
+            $activated = true;
+        }
 
         $redirectGoodUrl = '/cronwa/';
         $redirectEditUrl = "/cronwa/edit/" . $crontabName . "/" . $previousName;
@@ -117,13 +120,14 @@ class CronJobController extends AbstractController
         } catch (CronJobException $e) {
             return $this->addCronexpressionError($expression, $response, $redirectEditUrl);
         }
-        
+
         /** @var CronTab $crontab */
         $crontab = $this->crontabs->getCronTab($crontabName);
         $crontab
             ->getJob($previousName)
             ->setName($cronjobName)
-            ->parse($expression . ' ' . $command);
+            ->parse($expression . ' ' . $command)
+            ->setActivated($activated);
 
         $crontab->saveToFile($filename);
 
