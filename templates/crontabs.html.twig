@@ -5,6 +5,7 @@
 
 {% block content %}
     {% for crontab in crontabs %}
+
         <div class="table-responsive">
             <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
                 <caption><h4>{{ crontab.name }}</h4></caption>
@@ -15,6 +16,7 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 {% for job in crontab.jobs %}
                     <tr {% if job.activated %} class="is-selected" {% endif %}>
                         <td>{{ job.name }}</td>
@@ -29,9 +31,10 @@
                 </tbody>
             </table>
         </div>
+        <a href="add/{{ crontab.name }}">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent mdl-menu--unaligned">
+                Ajouter
+            </button>
+        </a>
     {% endfor %}
-
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-        Envoyer
-    </button>
 {% endblock %}

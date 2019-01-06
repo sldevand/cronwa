@@ -3,6 +3,7 @@
 namespace App\Cron;
 
 use App\Exception\CronJobException;
+use App\Exception\CronTabsException;
 
 /**
  * Class CronJobs
@@ -120,12 +121,12 @@ class CronTab
     /**
      * @param $name
      * @return CronJob|mixed
-     * @throws \Exception
+     * @throws CronTabsException
      */
     public function getJob($name)
     {
         if (!array_key_exists($name, $this->jobs)) {
-            throw new \Exception("Job $name doesn't exist");
+            throw new CronTabsException("Job $name doesn't exist");
         }
 
         return $this->jobs[$name];

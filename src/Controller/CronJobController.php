@@ -6,6 +6,7 @@ use App\Cron\CronJob;
 use App\Cron\CronTab;
 use App\Cron\CronTabs;
 use App\Exception\CronJobException;
+use App\Exception\CronTabsException;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -33,39 +34,23 @@ class CronJobController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return mixed
-     */
-    public function home(Request $request, Response $response, array $args)
-    {
-        $messages = $this->c->get('flash')->getMessage('flash');
-        return $this->view->render(
-            $response,
-            'crontabs.html.twig',
-            [
-                'crontabs' => $this->crontabs->getCronTabs(),
-                'messages' => $messages
-            ]
-        );
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return mixed
      * @throws \App\Exception\CronTabsException
      * @throws \Exception
      */
     public function edit(Request $request, Response $response, array $args)
     {
         $tab = $args['tab'];
-        $job = $args['job'];
+        /** @var CronTab $cronTab */
+        $cronTab = $this->crontabs->getCronTab($tab);
+
+        $job = [];
+        if (array_key_exists('job', $args)) {
+            $job = $args['job'];
+            $job = $cronTab->getJob($job);
+        }
 
         $messages = $this->flash->getMessage('flash');
         $errors = $this->flash->getMessage('errors');
-
-        /** @var CronTab $cronTab */
-        $cronTab = $this->crontabs->getCronTab($tab);
-        $job = $cronTab->getJob($job);
 
         return $this->view->render(
             $response,
@@ -93,7 +78,7 @@ class CronJobController extends AbstractController
         $expression = $body['expression'];
         $crontabName = $args['name'];
         $cronjobName = $body['name'];
-        $previousName = $body['previous_name'];
+        $previousName = $body['previous_name'] ?: $cronjobName;
         $command = $body['command'];
         $filename = CRONTABS_PATH . '/crontab.' . $crontabName . '.txt';
         $activated = false;
@@ -123,11 +108,20 @@ class CronJobController extends AbstractController
 
         /** @var CronTab $crontab */
         $crontab = $this->crontabs->getCronTab($crontabName);
-        $crontab
-            ->getJob($previousName)
-            ->setName($cronjobName)
-            ->parse($expression . ' ' . $command)
-            ->setActivated($activated);
+
+        try {
+            $crontab
+                ->getJob($previousName)
+                ->setName($cronjobName)
+                ->parse($expression . ' ' . $command)
+                ->setActivated($activated);
+        } catch (CronTabsException $e) {
+            $cronjob = new CronJob();
+            $cronjob->setName($cronjobName)
+                ->parse($expression . ' ' . $command)
+                ->setActivated($activated);
+            $crontab->saveJob($cronjob);
+        }
 
         $crontab->saveToFile($filename);
 

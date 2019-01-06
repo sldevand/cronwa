@@ -1,5 +1,10 @@
 {% extends "base.html.twig" %}
-{% set title="Edition" %}
+
+{% if job.name == false  %}
+    {% set title="Ajout" %}
+{% else %}
+    {% set title="Edition" %}
+{% endif %}
 
 {% block title %}{{ appname }} - {{ title }}{% endblock %}
 
@@ -21,13 +26,13 @@
 
                 <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" name="name" id="name"
-                           value="{{ job.name }}"/>
+                           value="{{ job.name }}" required/>
                     <label class="mdl-textfield__label" for="name">Nom</label>
                 </div>
 
                 <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" name="expression" id="expression"
-                           value="{{ job.toCronDatePart }}"/>
+                           value="{{ job.toCronDatePart }}" required/>
                     <label class="mdl-textfield__label" for="expression">Expression Cron</label>
                 </div>
 
@@ -37,7 +42,7 @@
 
                 <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <textarea class="mdl-textfield__input" type="text" name="command"
-                              id="command">{{ job.command }}</textarea>
+                              id="command" required>{{ job.command }}</textarea>
                     <label class="mdl-textfield__label" for="command">Commande</label>
                 </div>
                 <ul class="errorMessages mdl-button--accent">{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>
