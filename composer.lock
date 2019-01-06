@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a263cb12249ac72ffefa42e72a998e9",
+    "content-hash": "97cfd5777e039d30172ca93defa3e86b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -509,6 +509,42 @@
                 "validator"
             ],
             "time": "2018-11-04T21:58:45+00:00"
+        },
+        {
+            "name": "sivaschenko/utility-cron",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sivaschenko/utility-cron.git",
+                "reference": "20b5ed2794d22d96ff8fab8a33724429c46d27b9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sivaschenko/utility-cron/zipball/20b5ed2794d22d96ff8fab8a33724429c46d27b9",
+                "reference": "20b5ed2794d22d96ff8fab8a33724429c46d27b9",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.1.0"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergii Ivashchenko",
+                    "homepage": "http://www.sivaschenko.com/"
+                }
+            ],
+            "description": "Cron PHP library",
+            "time": "2016-11-20T17:29:05+00:00"
         },
         {
             "name": "slim/flash",

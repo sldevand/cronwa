@@ -118,12 +118,16 @@ class CronJob
     /**
      * @param string $datePart
      * @return bool
+     * @throws CronJobException
      */
     public static function validate($datePart)
     {
-        $expression = new \Cron\CronExpression($datePart);
-
-        return $expression->isValid();
+        try {
+            $expression = \Sivaschenko\Utility\Cron\ExpressionFactory::getExpression($datePart);
+            return $expression->isValid();
+        } catch (\Exception $e) {
+            throw new CronJobException($e->getMessage());
+        }
     }
 
     /**

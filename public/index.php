@@ -7,6 +7,8 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
+define("CRONTABS_PATH",__DIR__.'/../crontabs');
+
 require __DIR__ . '/../vendor/autoload.php';
 session_start();
 $settings = require __DIR__ . '/../src/settings.php';

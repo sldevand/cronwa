@@ -4,6 +4,8 @@ namespace Test;
 
 use App\Controller\CronJobController;
 use App\Cron\CronJob;
+use App\Exception\CronJobException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,25 +42,46 @@ class CronJobTest extends TestCase
 
 
     /**
-     * @dataProvider cronDatesProvider
+     * @dataProvider cronGoodExpressionsProvider
      * @param string $strToTest
-     * @param boolean $expected
+     * @throws CronJobException
      */
-    public function testValidate($strToTest, $expected)
+    public function testValidateGoodExpression($strToTest)
     {
-        $this->assertEquals($expected, CronJob::validate($strToTest));
+        $this->assertTrue(CronJob::validate($strToTest));
     }
 
+    /**
+     * @dataProvider cronBadExpressionsProvider
+     * @param string $strToTest
+     */
+    public function testValidateBadExpression($strToTest)
+    {
+        try {
+            $this->assertFalse(CronJob::validate($strToTest));
+        } catch (CronJobException $e) {
+            $this->assertTrue($e instanceof CronJobException);
+        }
+    }
 
     /**
      * @return array
      */
-    public function cronDatesProvider()
+    public function cronGoodExpressionsProvider()
     {
         return [
-            ["*****", false],
-            ["12,23 34 25 * *", false],
-            ["* * * * *", true]
+            ["* * * * *"]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function cronBadExpressionsProvider()
+    {
+        return [
+            ["*****"],
+            ["12,23 34 25 * *"]
         ];
     }
 

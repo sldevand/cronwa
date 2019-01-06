@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Cron\CronJob;
 use App\Cron\CronTab;
 use App\Cron\CronTabs;
+use App\Exception\CronJobException;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -82,41 +84,108 @@ class CronJobController extends AbstractController
      * @param Response $response
      * @param array $args
      * @return mixed
+     * @throws \App\Exception\CronTabsException
+     * @throws \Exception
      */
     public function post(Request $request, Response $response, array $args)
     {
         $body = $request->getParsedBody();
+        $expression = $body['expression'];
+        $crontabName = $args['name'];
+        $cronjobName = $body['name'];
+        $previousName = $body['previous_name'];
+        $command = $body['command'];
+        $filename = CRONTABS_PATH . '/crontab.' . $crontabName . '.txt';
 
-        if (!$request->getAttribute('has_errors')) {
-            $this->flash->addMessage('flash', 'Fichier enregistré !');
 
-            //TODO persistence in file
-            return $response->withRedirect('/cronwa/', 302);
+        $redirectGoodUrl = '/cronwa/';
+        $redirectEditUrl = "/cronwa/edit/" . $crontabName . "/" . $previousName;
+        $redirectStatus = 302;
+
+
+        if ($this->checkForErrors($request)) {
+            return $response->withRedirect(
+                $redirectEditUrl,
+                $redirectStatus
+            );
         }
 
+        try {
+            if (!CronJob::validate($expression)) {
+                return $this->addCronexpressionError($expression, $response, $redirectEditUrl);
+            }
+        } catch (CronJobException $e) {
+            return $this->addCronexpressionError($expression, $response, $redirectEditUrl);
+        }
+        
+        /** @var CronTab $crontab */
+        $crontab = $this->crontabs->getCronTab($crontabName);
+        $crontab
+            ->getJob($previousName)
+            ->setName($cronjobName)
+            ->parse($expression . ' ' . $command);
 
-        $errors = $request->getAttribute('errors');
+        $crontab->saveToFile($filename);
 
-        $this->addFormErrors($errors);
-        $this->flash->addMessage('flash', "Il y a des erreurs dans le formulaire !");
+        $this->flash->addMessage('flash', 'Fichier enregistré !');
+
+        return $response->withRedirect($redirectGoodUrl, $redirectStatus);
+    }
+
+    /**
+     * @param string $expression
+     * @param Response $response
+     * @param string $urlRedirect
+     * @return mixed
+     */
+    public function addCronexpressionError($expression, $response, $urlRedirect)
+    {
+        $this->addFlashError();
+        $this->flash->addMessage('errors', $expression . " n'est pas une expression Cron valide !");
 
         return $response->withRedirect(
-            "/cronwa/edit/" . $args['name'] . "/" . $body['previous_name'],
+            $urlRedirect,
             302
         );
     }
 
     /**
+     * @return $this
+     */
+    public function addFlashError()
+    {
+        $this->flash->addMessage('flash', "Il y a des erreurs dans le formulaire !");
+
+        return $this;
+    }
+
+    /**
      * @param array $errors
      */
-    public
-    function addFormErrors($errors)
+    public function addFormErrors($errors)
     {
         foreach ($errors as $error) {
             foreach ($error as $message) {
                 $this->flash->addMessage('errors', $message);
             }
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return bool|mixed
+     */
+    public function checkForErrors(Request $request)
+    {
+        if (!$request->getAttribute('has_errors')) {
+            return false;
+        }
+
+        $errors = $request->getAttribute('errors');
+        $this->addFormErrors($errors);
+        $this->addFlashError();
+
+        return true;
     }
 
 }

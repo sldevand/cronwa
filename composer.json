@@ -20,7 +20,8 @@
         "monolog/monolog": "^1.24",
         "slim/flash": "^0.2.0",
         "davidepastore/slim-validation": "^0.5.1",
-        "poliander/cron" : "2.0.0"
+        "poliander/cron" : "2.0.0",
+        "sivaschenko/utility-cron": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.4"
