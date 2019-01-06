@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use App\Controller\CronJobController;
 use App\Cron\CronJob;
 use PHPUnit\Framework\TestCase;
 
@@ -26,6 +27,41 @@ class CronJobTest extends TestCase
 
     }
 
+    public function testGetDatePart()
+    {
+        $cronJob = new CronJob(['name' => 'test']);
+        $expected = "48 12 1 1 1-2";
+        $entry = "48 12 1 1 1-2 sudo apt-get update -y && sudo apt-get upgrade";
+        $entry = $cronJob->getActivationPart($entry);
+        $entries = explode(" ", $entry);
+
+        $this->assertEquals($expected, $cronJob->getDatePart($entries));
+    }
+
+
+    /**
+     * @dataProvider cronDatesProvider
+     * @param string $strToTest
+     * @param boolean $expected
+     */
+    public function testValidate($strToTest, $expected)
+    {
+        $this->assertEquals($expected, CronJob::validate($strToTest));
+    }
+
+
+    /**
+     * @return array
+     */
+    public function cronDatesProvider()
+    {
+        return [
+            ["*****", false],
+            ["12,23 34 25 * *", false],
+            ["* * * * *", true]
+        ];
+    }
+
     public function testToString()
     {
         $expected = <<<EXP
@@ -37,9 +73,11 @@ EXP;
         $cronJob = $this->createCronJob('test1');
 
         $this->assertEquals($expected, $cronJob->__toString());
-
     }
 
+    /**
+     * @return array
+     */
     public function jobsProvider()
     {
         $cronJob = $this->createCronJob('test');

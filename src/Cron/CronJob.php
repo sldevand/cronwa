@@ -2,6 +2,8 @@
 
 namespace App\Cron;
 
+use App\Exception\CronJobException;
+
 /**
  * Class CronJob
  * @package App
@@ -56,21 +58,22 @@ class CronJob
     /**
      * @param $entry
      * @return CronJob
-     * @throws \Exception
+     * @throws CronJobException
      */
     public function parse($entry)
     {
-        if ($entry[0] === "#") {
-            $this->setActivated(false);
-            $entry = substr($entry, 1);
-        } else {
-            $this->setActivated(true);
-        }
 
+        $entry = $this->getActivationPart($entry);
         $entries = explode(" ", $entry);
 
         if (count($entries) < 6) {
-            throw new \Exception("Cannot parse '$entry' CronJob entry");
+            throw new CronJobException("Cannot parse '$entry' CronJob entry");
+        }
+
+        $datePart = $this->getDatePart($entries);
+
+        if (!self::validate($datePart)) {
+            throw new CronJobException("$datePart Is not a valid cron expression!");
         }
 
         $cronjob = [];
@@ -85,6 +88,42 @@ class CronJob
         $this->hydrate($cronjob);
 
         return $this;
+    }
+
+    /**
+     * @param array $entries
+     * @return string
+     */
+    public function getDatePart($entries)
+    {
+        $datePartArr = array_slice($entries, 0, 5);
+        return implode(" ", $datePartArr);
+    }
+
+    /**
+     * @param string $entry
+     * @return CronJob|string
+     */
+    public function getActivationPart($entry)
+    {
+        if ($entry[0] === "#") {
+            $this->setActivated(false);
+            return substr($entry, 1);
+        }
+        $this->setActivated(true);
+
+        return $entry;
+    }
+
+    /**
+     * @param string $datePart
+     * @return bool
+     */
+    public static function validate($datePart)
+    {
+        $expression = new \Cron\CronExpression($datePart);
+
+        return $expression->isValid();
     }
 
     /**
