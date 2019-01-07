@@ -40,11 +40,23 @@ function initDelete() {
         deleteButton.onclick = (event) => {
             event.preventDefault();
             const href = event.target.parentNode.attributes['href'];
+
+            document.querySelector('#cron-url').textContent = href.textContent;
             dialog.showModal();
 
         }
-        dialog.querySelector('button:not([disabled])')
+
+        dialog.querySelector('#dialog-cancel')
             .addEventListener('click', function () {
+                dialog.close();
+            });
+
+        dialog.querySelector('#dialog-ok')
+            .addEventListener('click', function () {
+
+                const url = document.querySelector('#cron-url').textContent;
+                Response.redirect(url, 302);
+                window.location = url;
                 dialog.close();
             });
     }

@@ -53,10 +53,17 @@ function initDelete() {
       deleteButton.onclick = function (event) {
         event.preventDefault();
         var href = event.target.parentNode.attributes['href'];
+        document.querySelector('#cron-url').textContent = href.textContent;
         dialog.showModal();
       };
 
-      dialog.querySelector('button:not([disabled])').addEventListener('click', function () {
+      dialog.querySelector('#dialog-cancel').addEventListener('click', function () {
+        dialog.close();
+      });
+      dialog.querySelector('#dialog-ok').addEventListener('click', function () {
+        var url = document.querySelector('#cron-url').textContent;
+        Response.redirect(url, 302);
+        window.location = url;
         dialog.close();
       });
     }
